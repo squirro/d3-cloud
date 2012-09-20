@@ -22,6 +22,7 @@
         fontSize = cloudFontSize,
         fontStyle = cloudFontNormal,
         fontWeight = cloudFontNormal,
+        random = Math.random,
         rotate = cloudRotate,
         padding = cloudPadding,
         spiral = archimedeanSpiral,
@@ -43,6 +44,7 @@
             d.style = fontStyle.call(this, d, i);
             d.weight = fontWeight.call(this, d, i);
             d.rotate = rotate.call(this, d, i);
+            d.rotate = rotate.call(this, d, i, random);
             d.size = ~~fontSize.call(this, d, i);
             d.padding = padding.call(this, d, i);
             return d;
@@ -59,8 +61,8 @@
             d;
         while (+new Date - start < timeInterval && ++i < n && timer) {
           d = data[i];
-          d.x = (size[0] * (Math.random() + .5)) >> 1;
-          d.y = (size[1] * (Math.random() + .5)) >> 1;
+          d.x = (size[0] * (random() + .5)) >> 1;
+          d.y = (size[1] * (random() + .5)) >> 1;
           cloudSprite(d, data, i);
           if (d.hasText && place(board, d, bounds)) {
             tags.push(d);
@@ -99,7 +101,7 @@
           startY = tag.y,
           maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]),
           s = spiral(size),
-          dt = Math.random() < .5 ? 1 : -1,
+          dt = random() < .5 ? 1 : -1,
           t = -dt,
           dxdy,
           dx,
@@ -170,6 +172,11 @@
     cloud.fontWeight = function(x) {
       if (!arguments.length) return fontWeight;
       fontWeight = d3.functor(x);
+    };
+
+    cloud.random = function(x) {
+      if (!arguments.length) return random;
+      random = d3.functor(x);
       return cloud;
     };
 
@@ -222,8 +229,8 @@
     return Math.sqrt(d.value);
   }
 
-  function cloudRotate() {
-    return (~~(Math.random() * 6) - 3) * 30;
+  function cloudRotate(d,i,random) {
+    return (~~(random() * 6) - 3) * 30;
   }
 
   function cloudPadding() {
