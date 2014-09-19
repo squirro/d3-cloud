@@ -172,6 +172,7 @@
     cloud.fontWeight = function(x) {
       if (!arguments.length) return fontWeight;
       fontWeight = d3.functor(x);
+      return cloud;
     };
 
     cloud.random = function(x) {
